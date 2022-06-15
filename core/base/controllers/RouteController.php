@@ -40,7 +40,7 @@ class RouteController
             if (strpos($address_str, $admin_alias) === strlen(PATH)) {
                 // админка
 
-                $useful_url = substr($address_str, strlen(PATH) + strlen($admin_alias));
+                $useful_url = substr($address_str, strlen(PATH) + strlen($admin_alias) + 1);
                 $url = explode('/', $useful_url);
 
                 $plugin_path = $_SERVER['DOCUMENT_ROOT'] . PATH . $this->routes['plugins']['path'] . $url[0];
@@ -103,6 +103,8 @@ class RouteController
                     }
                 }
             }
+
+            exit();
         } else {
             try {
                 throw new \Exception("Некорректная директория сайта!");
