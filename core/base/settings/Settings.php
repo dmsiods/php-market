@@ -9,7 +9,10 @@ class Settings
         'admin' => [
             'alias' => 'admin',
             'path' => 'core/admin/controllers/',
-            'hrUrl' => false
+            'hrUrl' => false,
+            'routes' => [
+                'product' => 'goods/getGoods/sale'
+            ]
         ],
         'settings' => [
             'path' => 'core/base/settings/'
@@ -21,9 +24,9 @@ class Settings
         ],
         'user' => [
             'path' => 'core/user/controllers/',
-            'hrUrl' => false,
+            'hrUrl' => true,
             'routes' => [
-                'catalog' => 'site'
+                'catalog' => 'site/hello/by'
             ]
         ],
         'default' => [
