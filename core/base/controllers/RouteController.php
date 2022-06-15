@@ -24,7 +24,7 @@ class RouteController
         // избавляемся от дублей страниц (/ в конце адресной строки)
         $slash_pos = strrpos($address_str, '/');
         if ($slash_pos === strlen($address_str) - 1 and $slash_pos !== 0) {
-            $this->redirect(rtrim($address_str, '/'));
+            $this->redirect(rtrim($address_str, '/'), 301);
         }
 
         // проверка на расположение index.php в корне
@@ -119,7 +119,7 @@ class RouteController
         $route = [];
 
         if (!empty($arr[0])) {
-            if ($this->routes[$var]['routes'][$arr[0]]) {
+            if (array_key_exists($arr[0], $this->routes[$var]['routes'])) {
                 $route = explode('/', $this->routes[$var]['routes'][$arr[0]]);
 
                 $this->controller .= ucfirst($route[0] . 'Controller');
@@ -130,8 +130,8 @@ class RouteController
             $this->controller .= $this->routes['default']['controller'];
         }
 
-        $this->inputMethod = $route[1] ? $route[1] : $this->routes['default']['inputMethod'];
-        $this->outputMethod = $route[2] ? $route[2] : $this->routes['default']['outputMethod'];
+        $this->inputMethod = array_key_exists(1, $route) ? $route[1] : $this->routes['default']['inputMethod'];
+        $this->outputMethod = array_key_exists(2, $route) ? $route[2] : $this->routes['default']['outputMethod'];
 
         return;
     }
