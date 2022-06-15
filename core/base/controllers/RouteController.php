@@ -48,7 +48,7 @@ class RouteController
                     $plugin = array_shift($url);
 
                     $pluginSettings = $this->routes['settings']['path'] . ucfirst($plugin) . 'Settings';
-                    $pluginSettings_path = $_SERVER['DOCUMENT_ROOT'] . PATH . $pluginSettings . 'php';
+                    $pluginSettings_path = $_SERVER['DOCUMENT_ROOT'] . PATH . $pluginSettings . '.php';
 
                     if (file_exists($pluginSettings_path)) {
                         $pluginSettings = str_replace('/', '\\', $pluginSettings);
