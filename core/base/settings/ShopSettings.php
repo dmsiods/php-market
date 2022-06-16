@@ -13,8 +13,10 @@ class ShopSettings
         'plugins' => [
             'path' => 'core/plugins/',
             'hrUrl' => false,
-            'dir' => '',
-            'routes' => []
+            'dir' => 'dirrrr',
+            'routes' => [
+                'product' => 'shop_goods/getGoods/sale'
+            ]
         ]
     ];
 

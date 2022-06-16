@@ -12,6 +12,7 @@ use core\base\exceptions\RouteException;
 use core\base\controllers\RouteController;
 
 try {
+    echo "dima hello!!!";
     $a = RouteController::getInstance()->route();
 } catch (RouteException $e) {
     exit($e->getMessage());
