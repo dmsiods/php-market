@@ -11,7 +11,7 @@ class Settings
             'path' => 'core/admin/controllers/',
             'hrUrl' => false,
             'routes' => [
-                'product' => 'goods/getGoods/sale'
+                // 'product' => 'goods/getGoods/sale'
             ]
         ],
         'settings' => [
@@ -26,7 +26,9 @@ class Settings
             'path' => 'core/user/controllers/',
             'hrUrl' => true,
             'routes' => [
-                'catalog' => 'site/hello/by'
+                // 'article' => 'info/getArticle',
+                // 'club' => 'info/getClub'
+                // 'catalog' => 'site/hello/by'
             ]
         ],
         'default' => [

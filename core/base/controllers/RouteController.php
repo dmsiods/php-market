@@ -29,24 +29,34 @@ class RouteController
 
         // проверка на расположение index.php в корне
         $index_path = substr($_SERVER['PHP_SELF'], 0, strpos($_SERVER['PHP_SELF'], 'index.php'));
+
         if ($index_path === PATH) {
+
+            // проверка, доступны ли руты
             $this->routes = Settings::get('routes');
 
             if (!$this->routes) {
                 throw new RouteException("Routes are not available!!!");
             }
 
+            // проверка на запрос админки
             $admin_alias = $this->routes['admin']['alias'];
-            if (strpos($address_str, $admin_alias) === strlen(PATH)) {
-                // админка
+            $url_parsed_arr = explode('/', substr($address_str, strlen(PATH)));
+            $admin_placeholder = !empty($url_parsed_arr[0]) ? $url_parsed_arr[0] : false;
 
-                $useful_url = substr($address_str, strlen(PATH) + strlen($admin_alias) + 1);
-                $url = explode('/', $useful_url);
+            if ($admin_placeholder and $admin_placeholder === $admin_alias) {
 
-                $plugin_path = $_SERVER['DOCUMENT_ROOT'] . PATH . $this->routes['plugins']['path'] . $url[0];
-                if ($url[0] and is_dir($plugin_path)) {
-                    $plugin = array_shift($url);
+                array_shift($url_parsed_arr);  // delete "admin"
 
+                // проверка, есть ли плагин
+                $plugin_placeholder = !empty($url_parsed_arr[0]) ? $url_parsed_arr[0] : false;
+                $plugin_path = $_SERVER['DOCUMENT_ROOT'] . PATH . $this->routes['plugins']['path'] . $plugin_placeholder;
+
+                if ($plugin_placeholder and is_dir($plugin_path)) {
+
+                    $plugin = array_shift($url_parsed_arr);
+
+                    // подгружаем уникальные настройки плагина
                     $pluginSettings = $this->routes['settings']['path'] . ucfirst($plugin) . 'Settings';
                     $pluginSettings_path = $_SERVER['DOCUMENT_ROOT'] . PATH . $pluginSettings . '.php';
 
@@ -55,50 +65,46 @@ class RouteController
                         $this->routes = $pluginSettings::get('routes');
                     }
 
+                    // проверка, может контроллер для плагина в другом месте
                     $dir = $this->routes['plugins']['dir'] ? '/' . $this->routes['plugins']['dir'] . '/' : '/';
                     $dir = str_replace('//', '/', $dir);
 
                     $this->controller = $this->routes['plugins']['path'] . $plugin . $dir;
-
                     $hrUrl = $this->routes['plugins']['hrUrl'];
-
                     $route = 'plugins';
                 } else {
                     $this->controller = $this->routes['admin']['path'];
-
                     $hrUrl = $this->routes['admin']['hrUrl'];
-
                     $route = 'admin';
                 }
             } else {
-                $url = explode('/', substr($address_str, strlen(PATH)));
-
                 $hrUrl = $this->routes['user']['hrUrl'];
-
                 $this->controller = $this->routes['user']['path'];
-
                 $route = 'user';
             }
 
-            $this->createRoute($route, $url);
+            $this->createRoute($route, $url_parsed_arr);
 
-            if ($url[1]) {
-                $count = count($url);
+            // есть ли параметры
+            if (!empty($url_parsed_arr[1])) {
+                $count = count($url_parsed_arr);
                 $key = '';
 
+                // проверка на наличие алиаса (читабельность, чпу(человекоподобное))
                 if (!$hrUrl) {
                     $i = 1;
                 } else {
-                    $this->parameters['alias'] = $url[1];
+                    $this->parameters['alias'] = $url_parsed_arr[1];
                     $i = 2;
                 }
 
+                // раскидываем параметры по ключам и значениям
                 for (; $i < $count; $i++) {
                     if (!$key) {
-                        $key = $url[$i];
+                        $key = $url_parsed_arr[$i];
                         $this->parameters[$key] = '';
                     } else {
-                        $this->parameters[$key] = $url[$i];
+                        $this->parameters[$key] = $url_parsed_arr[$i];
                         $key = '';
                     }
                 }
@@ -153,7 +159,7 @@ class RouteController
     {
     }
 
-    public function redirect($address)
+    public function redirect($address, $code)
     {
     }
 }
