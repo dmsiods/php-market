@@ -6,16 +6,11 @@ use core\base\exceptions\RouteException;
 use core\base\settings\Settings;
 use core\base\settings\ShopSettings;
 
-class RouteController
+class RouteController extends BaseController
 {
     static private $_instance;
 
     protected $routes;
-
-    protected $controller;
-    protected $inputMethod;
-    protected $outputMethod;
-    protected $parameters;
 
     private function __construct()
     {
@@ -151,10 +146,6 @@ class RouteController
         }
 
         return self::$_instance = new self();
-    }
-
-    public function route()
-    {
     }
 
     public function redirect($address, $code)
