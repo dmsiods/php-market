@@ -109,8 +109,6 @@ class RouteController
                     }
                 }
             }
-
-            exit();
         } else {
             try {
                 throw new \Exception("Некорректная директория сайта!");
