@@ -4,38 +4,6 @@ namespace core\base\controllers;
 
 trait BaseMethods
 {
-    protected $styles;
-    protected $scripts;
-
-    protected function init($admin = false)
-    {
-        if (!$admin) {
-            if (!empty(USER_CSS_JS['styles'])) {
-                foreach (USER_CSS_JS['styles'] as $item) {
-                    $this->styles[] = PATH . TEMPLATE . trim($item, '/');
-                }
-            }
-
-            if (!empty(USER_CSS_JS['scripts'])) {
-                foreach (USER_CSS_JS['scripts'] as $item) {
-                    $this->scripts[] = PATH . TEMPLATE . trim($item, '/');
-                }
-            }
-        } else {
-            if (!empty(ADMIN_CSS_JS['styles'])) {
-                foreach (USER_CSS_JS['styles'] as $item) {
-                    $this->styles[] = PATH . ADMIN_TEMPLATE . trim($item, '/');
-                }
-            }
-
-            if (!empty(ADMIN_CSS_JS['scripts'])) {
-                foreach (USER_CSS_JS['scripts'] as $item) {
-                    $this->scripts[] = PATH . ADMIN_TEMPLATE . trim($item, '/');
-                }
-            }
-        }
-    }
-
     protected function clearStr($str)
     {
         if (is_array($str)) {
