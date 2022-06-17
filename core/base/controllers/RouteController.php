@@ -8,7 +8,7 @@ use core\base\settings\ShopSettings;
 
 class RouteController extends BaseController
 {
-    static private $_instance;
+    use Singleton;
 
     protected $routes;
 
@@ -133,18 +133,5 @@ class RouteController extends BaseController
         $this->outputMethod = array_key_exists(2, $route) ? $route[2] : $this->routes['default']['outputMethod'];
 
         return;
-    }
-
-    private function __clone()
-    {
-    }
-
-    static public function getInstance()
-    {
-        if (self::$_instance instanceof self) {
-            return self::$_instance;
-        }
-
-        return self::$_instance = new self();
     }
 }
