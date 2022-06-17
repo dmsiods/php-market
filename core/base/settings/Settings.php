@@ -29,7 +29,7 @@ class Settings
                 // 'article' => 'info/getArticle',
                 // 'club' => 'info/getClub'
                 // 'catalog' => 'site/hello/by'
-                'site' => 'index/hello'
+                // 'site' => 'index/hello'
             ]
         ],
         'default' => [
