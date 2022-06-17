@@ -147,8 +147,4 @@ class RouteController extends BaseController
 
         return self::$_instance = new self();
     }
-
-    public function redirect($address, $code)
-    {
-    }
 }
